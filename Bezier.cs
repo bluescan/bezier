@@ -2,8 +2,7 @@
 //
 // Implementations for splines and paths with various degrees of smoothness. A 'path', or 'spline', is arbitrarily long
 // and may be composed of smaller path sections called 'curves'. For example, a Bezier path is made from multiple
-// Bezier curves. Implementations for piecewise-linear paths, Hermite/Bezier curves and paths, and Nonuniform
-// Nonrational Cubic-Basis splines can be found in this file.
+// Bezier curves.
 //
 // Regarding naming, the word 'spline' refers to any path that is composed of piecewise parts. Strictly speaking one
 // could call a composite of multiple Bezier curves a 'Bezier Spline' but it is not a common term. In this file the
