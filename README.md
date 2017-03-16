@@ -3,14 +3,14 @@ A cubic Bezier class for Unity. This code is a conversion of the Tacent C++ code
 
 [Browse Tacent Source](http://upperboundsinteractive.com/Tacent/Modules/index.html)
 
-The Bezier.cs file contains two classes, a simple BezierCurve class that implements the standard Bernstein polynomials, and a BezierPath class that essentailly joins the curves together to create a longer path. Both classes implement functions to find the tangent for any t value.
+The Bezier.cs file contains two classes, a simple BezierCurve class that implements the standard Bernstein polynomials, and a BezierPath class that essentially joins the curves together to create a longer path. Both classes implement functions to find the tangent for any t value.
 
 
 
 
 ### BezierCurve
 
-In most cases you won't need to use this class directly, but you can if you like. Give it your 4 CVs, and it will let you get a point on the curve for a particulat t value, get the tangent for a particular t value, and find the t value of the closest point on the curve to a point you specify.
+In most cases you won't need to use this class directly, but you can if you like. Give it your 4 CVs, and it will let you get a point on the curve for a particular t value, get the tangent for a particular t value, and find the t value of the closest point on the curve to a point you specify.
 
 
 ### BezierPath
