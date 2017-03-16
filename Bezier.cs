@@ -6,8 +6,7 @@
 //
 // Regarding naming, the word 'spline' refers to any path that is composed of piecewise parts. Strictly speaking one
 // could call a composite of multiple Bezier curves a 'Bezier Spline' but it is not a common term. In this file the
-// word 'path' is used for a composite of Bezier curves or a composite of line segments, and we reserve the word spline
-// for paths composed of multiple cubic polynomial pieces.
+// word 'path' is used for a composite of Bezier curves.
 //
 // Copyright (c) 2006, 2017 Tristan Grimmer.
 // Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby
@@ -24,14 +23,16 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 
-// A BezierCurve represents a single segment of a Bezier path. It knows how to interpret 4 CVs using the Bezier basis
-// functions. The class implements cubic Bezier curves -- not linear or quadratic.
-class BezierCurve
+// A CubicBezierCurve represents a single segment of a Bezier path. It knows how to interpret 4 CVs using the Bezier basis
+// functions. This class implements cubic Bezier curves -- not linear or quadratic.
+class CubicBezierCurve
 {
 	Vector3[] controlVerts = new Vector3[4];
 
-	public BezierCurve(Vector3[] cvs)
+	public CubicBezierCurve(Vector3[] cvs)
 	{
+		// Cubic Bezier curves require 4 cvs.
+		Assert.IsTrue(cvs.Length == 4);
 		for (int cv = 0; cv < 4; cv++)
 			controlVerts[cv] = cvs[cv];
 	}
@@ -99,10 +100,10 @@ class BezierCurve
 }
 
 
-// A BezierPath is made of a collection of Bezier curves. If two points are supplied they become the end points of one
-// BezierCurve and the 2 interior CVs are generated, creating a small straight line. For 3 points the middle point will
-// be on both BezierCurves and each curve will have equal tangents at that point.
-public class BezierPath
+// A CubicBezierPath is made of a collection of cubic Bezier curves. If two points are supplied they become the end
+// points of one CubicBezierCurve and the 2 interior CVs are generated, creating a small straight line. For 3 points
+// the middle point will be on both CubicBezierCurves and each curve will have equal tangents at that point.
+public class CubicBezierPath
 {
 	public enum Type
 	{
@@ -117,7 +118,7 @@ public class BezierPath
 	// The term 'knot' is another name for a point right on the path (an interpolated point). With this constructor the
 	// knots are supplied and interpolated. knots.length (the number of knots) must be >= 2. Interior Cvs are generated
 	// transparently and automatically.
-	public BezierPath(Vector3[] knots, Type t = Type.Open)																{ InterpolatePoints(knots, t); }
+	public CubicBezierPath(Vector3[] knots, Type t = Type.Open)															{ InterpolatePoints(knots, t); }
 	public Type GetPathType()																							{ return type; }
 	public bool IsClosed()																								{ return (type == Type.Closed) ? true : false; }
 	public bool IsValid()																								{ return (numCurveSegments > 0) ? true : false; }
@@ -329,7 +330,7 @@ public class BezierPath
 		curveCVs[2] = controlVerts[3*segment + 2];
 		curveCVs[3] = controlVerts[3*segment + 3];
 
-		BezierCurve bc = new BezierCurve(curveCVs);
+		CubicBezierCurve bc = new CubicBezierCurve(curveCVs);
 		return bc.GetPoint(t - (float)segment);
 	}
 
@@ -372,7 +373,7 @@ public class BezierPath
 		curveCVs[2] = controlVerts[3*segment + 2];
 		curveCVs[3] = controlVerts[3*segment + 3];
 
-		BezierCurve bc = new BezierCurve(curveCVs);
+		CubicBezierCurve bc = new CubicBezierCurve(curveCVs);
 		return bc.GetTangent(t - (float)segment);
 	}
 
@@ -394,7 +395,7 @@ public class BezierPath
 			for (int i = 0; i < 4; i++)
 				curveCVs[i] = controlVerts[startIndex+i];
 
-			BezierCurve curve = new BezierCurve(curveCVs);
+			CubicBezierCurve curve = new CubicBezierCurve(curveCVs);
 			float curveClosestParam = curve.GetClosestParam(pos, paramThreshold);
 
 			Vector3 curvePos = curve.GetPoint(curveClosestParam);
