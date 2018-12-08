@@ -3,7 +3,7 @@ A cubic Bezier class for Unity. This code is a conversion of the Tacent C++ code
 
 [Browse Tacent Source](http://upperboundsinteractive.com/Tacent/Modules/index.html)
 
-The Bezier.cs file contains two classes, a simple CubicBezierCurve class that implements the standard Bernstein polynomials, and a CubicBezierPath class that essentially joins the curves together to create a longer composite path. Both classes implement functions to find the tangent for any t value.
+The Bezier.cs file contains two classes. A simple CubicBezierCurve class that implements the standard Bernstein polynomials, and a CubicBezierPath class that essentially joins the curves together to create a longer composite path. Both classes implement functions to find the tangent for any t value.
 
 
 
