@@ -27,16 +27,20 @@ using UnityEngine.Assertions;
 // functions. This class implements cubic Bezier curves -- not linear or quadratic.
 class CubicBezierCurve
 {
-	Vector3[] controlVerts = new Vector3[4];
+	private Vector3[] controlVerts;
 
 	public CubicBezierCurve(Vector3[] cvs)
 	{
-		// Cubic Bezier curves require 4 cvs.
-		Assert.IsTrue(cvs.Length == 4);
-		for (int cv = 0; cv < 4; cv++)
-			controlVerts[cv] = cvs[cv];
+		SetControlVerts(cvs);
 	}
 
+	public void SetControlVerts(Vector3[] cvs)
+	{
+		// Cubic Bezier curves require 4 cvs.
+		Assert.IsTrue(cvs.Length == 4);
+		controlVerts = cvs;
+	}
+	
 	public Vector3 GetPoint(float t)                            // t E [0, 1].
 	{
 		Assert.IsTrue((t >= 0.0f) && (t <= 1.0f));
@@ -389,13 +393,14 @@ public class CubicBezierPath
 	{
 		float minDistSq = float.MaxValue;
 		float closestParam = 0.0f;
+		Vector3[] curveCVs = new Vector3[4];
+		CubicBezierCurve curve = new CubicBezierCurve(curveCVs);
 		for (int startIndex = 0; startIndex < controlVerts.Length - 1; startIndex += 3)
 		{
-			Vector3[] curveCVs = new Vector3[4];
 			for (int i = 0; i < 4; i++)
 				curveCVs[i] = controlVerts[startIndex+i];
 
-			CubicBezierCurve curve = new CubicBezierCurve(curveCVs);
+			curve.SetControlVerts(curveCVs);
 			float curveClosestParam = curve.GetClosestParam(pos, paramThreshold);
 
 			Vector3 curvePos = curve.GetPoint(curveClosestParam);
@@ -403,7 +408,7 @@ public class CubicBezierPath
 			if (distSq < minDistSq)
 			{
 				minDistSq = distSq;
-				float startParam = ((float)startIndex) / 3.0f;
+				float startParam = startIndex / 3.0f;
 				closestParam = startParam + curveClosestParam;
 			}
 		}
